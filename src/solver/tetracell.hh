@@ -3,7 +3,7 @@
 class tetra_cell
 {
     public:
-        tetra_cell(int up, int down, int right, left)
+        tetra_cell(int up, int down, int right, int left)
         {
             this.up = up;
             this.down = down;
