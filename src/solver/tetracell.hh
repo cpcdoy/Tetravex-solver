@@ -1,9 +1,9 @@
 #pragma once
 
-class TetraCell
+class tetra_cell
 {
     public:
-        TetraCell(int up, int down, int right, left)
+        tetra_cell(int up, int down, int right, left)
         {
             this.up = up;
             this.down = down;
