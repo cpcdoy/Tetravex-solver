@@ -46,9 +46,9 @@ tetra_solver::tetra_solver(std::string path)
 unsigned int tetra_solver::get_global_dist()
 {
     this->global_dist = 0;
-    /*for (unsigned int i = 0; i < this->grid_size; i++)
-        for (unsigned int j = 0; j < this->grid_size; j++)*/
-            this->global_dist += get_cell_dist(0, 0);
+    for (unsigned int i = 0; i < this->grid_size; i++)
+        for (unsigned int j = 0; j < this->grid_size; j++)
+            this->global_dist += get_cell_dist(i, j);
     return this->global_dist;
 }
 
