@@ -11,7 +11,7 @@
 int main(int argc, char** argv)
 {
     io_handler<tetra_cell> cell_io;
-    while (!pipe_io.is_finished())
+    while (!cell_io.is_finished())
     {
         tetra_cell c;
         cell_io >> c;
