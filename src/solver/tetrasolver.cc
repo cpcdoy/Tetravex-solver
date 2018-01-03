@@ -46,9 +46,9 @@ tetra_solver::tetra_solver(std::string path)
 unsigned int tetra_solver::get_global_dist()
 {
     this->global_dist = 0;
-    for (unsigned int i = 0; i < this->grid_size; i++)
-        for (unsigned int j = 0; j < this->grid_size; j++)
-            this->global_dist += get_cell_dist(i, j);
+    /*for (unsigned int i = 0; i < this->grid_size; i++)
+        for (unsigned int j = 0; j < this->grid_size; j++)*/
+            this->global_dist += get_cell_dist(0, 0);
     return this->global_dist;
 }
 
@@ -62,9 +62,9 @@ unsigned int tetra_solver::expected_swap_dist(tetra_cell cell, int i, int j)
 {
     int cell_dist = 0;
     if (i + 1 < this->grid_size)
-        cell_dist += abs(cell.up - this->tetra_grid[i + 1][j].down);
+        cell_dist += abs(cell.down - this->tetra_grid[i + 1][j].up);
     if (i - 1 > 0)
-        cell_dist += abs(cell.down - this->tetra_grid[i - 1][j].up);
+        cell_dist += abs(cell.up - this->tetra_grid[i - 1][j].down);
 
     if (j + 1 < this->grid_size)
         cell_dist += abs(cell.right - this->tetra_grid[i][j + 1].left);
