@@ -1,3 +1,5 @@
+#include "utils/io.hh"
+
 /**
  * @brief Tetravex solver entry point (main)
  *
@@ -8,5 +10,12 @@
  **/
 int main(int argc, char** argv)
 {
+    io_handler<tetra_cell> cell_io;
+    while (!pipe_io.is_finished())
+    {
+        tetra_cell c;
+        cell_io >> c;
+    }
+
     return 0;
 }

@@ -10,6 +10,9 @@ set(CMAKE_AR  "gcc-ar")
 set(CMAKE_CXX_ARCHIVE_CREATE "<CMAKE_AR> qcs <TARGET> <LINK_FLAGS> <OBJECTS>")
 set(CMAKE_CXX_ARCHIVE_FINISH   true)
 
+include_directories(src/utils)
+include_directories(src/solver)
+
 set(BIN_NAME tetravex)
 add_executable(${BIN_NAME}
   src/main.cc)
