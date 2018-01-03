@@ -1,1 +1,1 @@
-add_library(solver OBJECT)
+add_library(solver OBJECT tetrasolver.cc)

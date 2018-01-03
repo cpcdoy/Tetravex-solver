@@ -8,6 +8,7 @@
  * @return
  */
 template<typename data_type>
+inline
 void
 io_handler<data_type>::
 open_file(std::string path)
@@ -21,6 +22,7 @@ open_file(std::string path)
  * @return
  */
 template<typename data_type>
+inline
 bool
 io_handler<data_type>::
 is_finished()
@@ -31,11 +33,26 @@ is_finished()
 /**
  * @brief
  *
+ * @return
+ */
+template<typename data_type>
+inline
+std::vector<std::vector<tetra_cell>>
+io_handler<data_type>::
+get_cells()
+{
+    return cells_cache;
+}
+
+/**
+ * @brief
+ *
  * @param line
  *
  * @return
  */
 template<typename data_type>
+inline
 io_handler<data_type>&
 io_handler<data_type>::
 operator>>(data_type& line)
@@ -51,6 +68,7 @@ operator>>(data_type& line)
  * @return
  */
 template<>
+inline
 unsigned int
 io_handler<tetra_cell>::
 get_tetra_dim()
@@ -66,6 +84,7 @@ get_tetra_dim()
  * @return
  */
 template<>
+inline
 io_handler<tetra_cell>&
 io_handler<tetra_cell>::
 operator>>(tetra_cell& cell)
@@ -137,6 +156,8 @@ operator>>(tetra_cell& cell)
                 c.down = *it - '0';
             }
 
+
+        cells_cache.push_back(tmp_cells);
         // Return the next cell
         cell = tmp_cells[0];
         idx++;
@@ -156,6 +177,7 @@ operator>>(tetra_cell& cell)
  * @return
  */
 template<>
+inline
 io_handler<std::string>&
 io_handler<std::string>::
 operator>>(std::string& line)
@@ -170,6 +192,7 @@ operator>>(std::string& line)
  * @return
  */
 template<typename data_type>
+inline
 void
 io_handler<data_type>::
 close()

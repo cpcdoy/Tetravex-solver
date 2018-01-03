@@ -1,10 +1,15 @@
 #pragma once
-#include "tetracell.hh"
-#include <vector>
+
+# include "../utils/io.hh"
+
+# include <vector>
 
 class tetra_solver
 {
     public:
+        tetra_solver() {  }
+        tetra_solver(std::string path);
+
         unsigned int get_global_dist();
         unsigned int get_cell_dist(int i, int j);
         unsigned int expected_swap_dist(tetra_cell cell, int i, int j);

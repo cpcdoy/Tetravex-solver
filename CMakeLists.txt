@@ -13,10 +13,12 @@ set(CMAKE_CXX_ARCHIVE_FINISH   true)
 include_directories(src/utils)
 include_directories(src/solver)
 
+add_subdirectory(src/solver)
+
 set(BIN_NAME tetravex)
 add_executable(${BIN_NAME}
-  src/main.cc)
-  #$<TARGET_OBJECTS:debug> $<TARGET_OBJECTS:resource>
+  src/main.cc
+  $<TARGET_OBJECTS:solver>)
 
 add_custom_target(deep_clean
   COMMAND find . -iwholename '*cmake*' -not -name CMakeLists.txt -not -name cmake_deps -not -name '*Find*' -delete

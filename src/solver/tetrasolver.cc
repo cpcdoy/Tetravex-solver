@@ -1,6 +1,48 @@
 #include "tetrasolver.hh"
 #include <stdlib.h>
 
+tetra_solver::tetra_solver(std::string path)
+{
+    io_handler<tetra_cell> cell_io;
+    cell_io.open_file(path);
+
+    tetra_cell c;
+    cell_io >> c;
+    this->grid_size = cell_io.get_tetra_dim();
+
+    std::vector<tetra_cell> tmp_cells;
+    while (!cell_io.is_finished())
+    {
+        tetra_cell c;
+        cell_io >> c;
+    }
+
+    this->tetra_grid = cell_io.get_cells();
+    for (unsigned int i = 0; i < this->grid_size; i++)
+        for (int k = 0; k < 3; k++)
+        {
+            for (unsigned int j = 0; j < this->grid_size; j++)
+            {
+                if (k == 0)
+                {
+                    tetra_cell c = this->tetra_grid[i][j];
+                    std::cout << " " << c.up << "  ";
+                }
+                else if (k == 1)
+                {
+                    tetra_cell c = this->tetra_grid[i][j];
+                    std::cout << c.left << " " << c.right << " ";
+                }
+                else if (k == 2)
+                {
+                    tetra_cell c = this->tetra_grid[i][j];
+                    std::cout << " " << c.down << "  ";
+                }
+            }
+            std::cout << std::endl;
+        }
+}
+
 unsigned int tetra_solver::get_global_dist()
 {
     this->global_dist = 0;
@@ -16,7 +58,7 @@ unsigned int tetra_solver::get_cell_dist(int i, int j)
     return expected_swap_dist(cell, i, j);
 }
 
-unsigned int expected_swap_dist(tetra_cell cell, int i, int j)
+unsigned int tetra_solver::expected_swap_dist(tetra_cell cell, int i, int j)
 {
     int cell_dist = 0;
     if (i + 1 < this->grid_size)
@@ -47,12 +89,12 @@ int tetra_solver::swap_prediction(int i1, int j1, int i2, int j2)
     return dist_variation;
 }
 
-void tetra_swap(int i1, int j1, int i2, int j2)
+void tetra_solver::tetra_swap(int i1, int j1, int i2, int j2)
 {
     /*auto tmp = *this->tetra_grid[i1][j1];
     *(this->tetra_grid[i1][j1]) = *(this->tetra_grid[i2][j2]);
     *(this->tetra_grid[i2][j2]) = tmp;*/
-    std::swap(this->tetra_grid[i1][j1], this->tetra_grid[i2][j2])
+    std::swap(this->tetra_grid[i1][j1], this->tetra_grid[i2][j2]);
 }
 
 int tetra_solver::try_tetra_swap()
