@@ -1,4 +1,5 @@
 #include "utils/io.hh"
+#include "solver/tetrasolver.hh"
 
 /**
  * @brief Tetravex solver entry point (main)
