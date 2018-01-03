@@ -1,17 +1,9 @@
 #pragma once
 
-class tetra_cell
+struct tetra_cell
 {
-    public:
-        tetra_cell(int up, int down, int right, int left)
-        {
-            this.up = up;
-            this.down = down;
-            this.right = right;
-            this.left = left;
-        }
-        int up;
-        int down;
-        int right;
-        int left;
+    int up;
+    int down;
+    int right;
+    int left;
 };
