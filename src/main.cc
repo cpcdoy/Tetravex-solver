@@ -12,9 +12,17 @@
  **/
 int main(int argc, char** argv)
 {
-    std::string path(argv[1]);
-    tetra_solver solver(path);
-    std::cout << solver.get_global_dist() << std::endl;
+    if (argc > 1)
+    {
+        std::string path(argv[1]);
+        tetra_solver solver(path);
+        solver.pretty_print();
+        solver.solve();
+        std::cout << "----\nSolving....\n----"<< std::endl;
+        solver.pretty_print();
+    }
+    else
+        std::cout << "--------Tetravex---------\nUsage: tetravex path/to/file" << std::endl;
 
     return 0;
 }
