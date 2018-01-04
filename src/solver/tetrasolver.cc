@@ -70,7 +70,8 @@ void tetra_solver::tetra_swap(int i1, int j1, int i2, int j2)
     /*auto tmp = *this->tetra_grid[i1][j1];
     *(this->tetra_grid[i1][j1]) = *(this->tetra_grid[i2][j2]);
     *(this->tetra_grid[i2][j2]) = tmp;*/
-    //std::cout << "swapping " << i1 << " " << j1 << " " << i2 << " " << j2 << std::endl;
+    if (i1 == 0 && j1 == 0 && i2 == 0 && j2 == 1)
+        std::cout << "swapping " << i1 << " " << j1 << " " << i2 << " " << j2 << std::endl;
     std::swap(this->tetra_grid[i1][j1], this->tetra_grid[i2][j2]);
 }
 
@@ -82,15 +83,41 @@ int tetra_solver::try_tetra_swap()
     unsigned int i2 = rand() % (this->grid_size);
     unsigned int j2 = rand() % (this->grid_size);
 
-    int dist_variation = swap_prediction(i1, j1, i2, j2);
+    //int dist_variation = swap_prediction(i1, j1, i2, j2);
 
-    //std::cout << "dist var " << dist_variation << std::endl;
+    auto v_tmp = this->tetra_grid;
+    int d_old = get_global_dist();
     tetra_swap(i1, j1, i2, j2);
+    int d_new = get_global_dist();
+    if (d_new == 0)
+    {
+        std::cout << "END" << std::endl;
+        //this->tetra_grid = v_tmp;
+        return 1;
+    }
+    else if (d_old == 0)
+    {
+        std::cout << "END" << std::endl;
+        this->tetra_grid = v_tmp;
+        return 1;
+    }
+
+    int delta = d_new - d_old;
+
+    std::cout << "delta " << delta  << std::endl;
+    if (delta >= 0)
+    {
+        this->tetra_grid = v_tmp;
+        std::default_random_engine gen;
+        std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+        if (exp(-delta / this->T) > dist(gen))
+            tetra_swap(i1, j1, i2, j2);
+    }
     //pretty_print();
-    return get_global_dist();
+    return 0;
 }
 
-float tetra_solver::metropolis(float E_i, float E_i_1)
+/*float tetra_solver::metropolis(float E_i, float E_i_1)
 {
     if (E_i <= E_i_1)
         return E_i;
@@ -108,37 +135,40 @@ float tetra_solver::metropolis(float E_i, float E_i_1)
     }
 
     return E_i_1;
-}
+}*/
 
 void tetra_solver::solve()
 {
-    float T_init = 10.f;
+    float T_init = 100.f;
     this->T = T_init;
-    float T_min = 1e-4f;
+    float T_min = 1e-6f;
     float tau = 1e4f;
     float t = 0.f;
 
     float E_i_1 = get_global_dist();
     float E_i = 0.f;
 
+    float max_steps = 1000000.f;
+
     int i = 0;
-    while (get_global_dist() != 0)
+    int time = 100000;
+    while (t < max_steps && get_global_dist() != 0)
     {
-        E_i = try_tetra_swap();
+        if (try_tetra_swap() == 1)
+            break;
+        std::cout << "dist " << get_global_dist() << std::endl;
 
-        E_i_1 = metropolis(E_i, E_i_1);
+        //E_i_1 = metropolis(E_i, E_i_1);
 
-        if (i++ % 100 == 0)
-        {
-            t += 1.f;
+        t += 1.f;
 
-            this->T = T_init * sqrt(-t / tau);
-        }
+        this->T *= pow((T_min / this->T), 1.f / max_steps);
     }
 }
 
 void tetra_solver::pretty_print()
 {
+    std::cout << "Grid: " << this->grid_size << "*" << this->grid_size << std::endl;
     for (unsigned int i = 0; i < this->grid_size; i++)
         for (int k = 0; k < 3; k++)
         {
