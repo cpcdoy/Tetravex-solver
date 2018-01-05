@@ -1,14 +1,15 @@
 #include "tetrasolver.hh"
 #include <stdlib.h>
 
-tetra_solver::tetra_solver(std::string path)
+tetra_solver::tetra_solver(std::string path, bool nice)
 {
     io_handler<tetra_cell> cell_io;
+    if (nice)
+        cell_io.enable_nice_format();
     cell_io.open_file(path);
 
     tetra_cell c;
     cell_io >> c;
-    this->grid_size = cell_io.get_tetra_dim();
 
     std::vector<tetra_cell> tmp_cells;
     while (!cell_io.is_finished())
@@ -20,6 +21,7 @@ tetra_solver::tetra_solver(std::string path)
     srand (static_cast <unsigned> (time(0)));
 
     this->tetra_grid = cell_io.get_cells();
+    this->grid_size = cell_io.get_tetra_dim();
 }
 
 unsigned int tetra_solver::get_global_dist()

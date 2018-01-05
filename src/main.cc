@@ -14,8 +14,8 @@ int main(int argc, char** argv)
 {
     if (argc > 1)
     {
-        std::string path(argv[1]);
-        tetra_solver solver(path);
+        std::string path(argv[1 + (int)(argv[1][1] == 'n')]);
+        tetra_solver solver(path, argv[1][1] == 'n');
         solver.pretty_print();
         std::cout << "----\nSolving...." << std::endl;
         solver.solve();

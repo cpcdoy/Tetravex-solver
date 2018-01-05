@@ -6,6 +6,7 @@
 # include <cstdlib>
 # include <vector>
 # include <iostream>
+# include <math.h>
 
 # include "../solver/tetracell.hh"
 
@@ -25,6 +26,8 @@ class io_handler
     inline bool is_finished();
     inline void close();
 
+    inline void enable_nice_format();
+
   private:
     std::ifstream file;
 
@@ -35,6 +38,8 @@ class io_handler
 
     std::vector<std::vector<tetra_cell>> cells_cache;
     std::vector<tetra_cell> tmp_cells;
+
+    bool nice_format = false;
 };
 
 # include "io.hxx"

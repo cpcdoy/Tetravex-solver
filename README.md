@@ -26,5 +26,7 @@ make
 ## Usage
 
 ```
-./tetravex path/to/file
+./tetravex [-n] path/to/file
 ```
+
+The "-n" option enables to read a file format that is nicer. Every file in the data/ directory should use the "-n" option except for the files named "example*"

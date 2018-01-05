@@ -10,7 +10,7 @@ class tetra_solver
 {
     public:
         tetra_solver() {  }
-        tetra_solver(std::string path);
+        tetra_solver(std::string path, bool nice);
 
         unsigned int get_global_dist();
         unsigned int get_cell_dist(int i, int j);
