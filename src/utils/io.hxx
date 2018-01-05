@@ -14,6 +14,11 @@ io_handler<data_type>::
 open_file(std::string path)
 {
     file.open(path.c_str(), std::ios::in);
+    if (!file.is_open())
+    {
+        std::cerr << "Failed to open \"" << path << "\"" << std::endl;
+        exit(1);
+    }
 }
 
 /**
