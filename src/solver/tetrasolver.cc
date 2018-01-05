@@ -17,7 +17,6 @@ tetra_solver::tetra_solver(std::string path)
         cell_io >> c;
     }
 
-    //srand(time(NULL));
     srand (static_cast <unsigned> (time(0)));
 
     this->tetra_grid = cell_io.get_cells();
@@ -54,21 +53,6 @@ unsigned int tetra_solver::expected_swap_dist(tetra_cell cell, int i, int j)
     return cell_dist;
 }
 
-int tetra_solver::swap_prediction(int i1, int j1, int i2, int j2)
-{
-    tetra_cell cell1 = this->tetra_grid[i1][j1];
-    tetra_cell cell2 = this->tetra_grid[i2][j2];
-
-    unsigned int cur_dist1 = get_cell_dist(i1, j1);
-    unsigned int cur_dist2 = get_cell_dist(i2, j2);
-
-    unsigned int new_dist1 = expected_swap_dist(cell2, i1, j1);
-    unsigned int new_dist2 = expected_swap_dist(cell1, i2, j2);
-
-    int dist_variation = (cur_dist1 - new_dist1) + (cur_dist2 - new_dist2);
-    return dist_variation;
-}
-
 void tetra_solver::tetra_swap(int i1, int j1, int i2, int j2)
 {
     std::swap(this->tetra_grid[i1][j1], this->tetra_grid[i2][j2]);
@@ -96,57 +80,29 @@ int tetra_solver::try_tetra_swap()
 
     int delta = d_new - d_old;
 
-    //std::cout << "delta " << delta  << std::endl;
     if (delta >= 0)
     {
         this->tetra_grid = v_tmp;
         std::default_random_engine gen;
         std::uniform_real_distribution<float> dist(0.0f, 1.0f);
 
-        //float r = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
         if (exp(-delta / this->T) > dist(gen))
             tetra_swap(i1, j1, i2, j2);
     }
 
-    //pretty_print();
     return 0;
 }
-
-/*float tetra_solver::metropolis(float E_i, float E_i_1)
-{
-    if (E_i <= E_i_1)
-        return E_i;
-    else
-    {
-        const float k_b = 1.f;
-        float p = exp(-(E_i - E_i_1) / (k_b * this->T));
-
-        std::default_random_engine gen;
-        std::uniform_real_distribution<float> dist(0.0f, 1.0f);
-
-        float rand = dist(gen);
-        if (rand > p)
-            try_tetra_swap();
-    }
-
-    return E_i_1;
-}*/
 
 void tetra_solver::solve()
 {
     float T_init = 100.f;
     this->T = T_init;
     float T_min = 1e-6f;
-    float tau = 1e4f;
     float t = 0.f;
-
-    float E_i_1 = get_global_dist();
-    float E_i = 0.f;
 
     float max_steps = 1000000.f;
 
     int time = 0;
-    float delta = 0.001f;
     int prec_d = 0;
     int d = 1;
     int it = 0;
