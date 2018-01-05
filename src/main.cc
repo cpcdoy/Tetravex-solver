@@ -17,8 +17,9 @@ int main(int argc, char** argv)
         std::string path(argv[1]);
         tetra_solver solver(path);
         solver.pretty_print();
+        std::cout << "----\nSolving...." << std::endl;
         solver.solve();
-        std::cout << "----\nSolving....\n----"<< std::endl;
+        std::cout << "----" << std::endl;
         solver.pretty_print();
     }
     else
