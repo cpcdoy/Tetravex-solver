@@ -28,4 +28,6 @@ class tetra_solver
         unsigned int grid_size;
         unsigned int global_dist;
         float T;
+
+        bool nice = false;
 };

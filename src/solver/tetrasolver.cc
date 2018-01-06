@@ -4,6 +4,7 @@
 tetra_solver::tetra_solver(std::string path, bool nice)
 {
     io_handler<tetra_cell> cell_io;
+    this->nice = nice;
     if (nice)
         cell_io.enable_nice_format();
     cell_io.open_file(path);
@@ -113,7 +114,8 @@ void tetra_solver::solve()
         it++;
         if (try_tetra_swap() == 1)
         {
-            std::cout << "Solved in " << it << " iterations" << std::endl;
+            if (nice)
+                std::cout << "Solved in " << it << " iterations" << std::endl;
             break;
         }
 
@@ -141,7 +143,8 @@ void tetra_solver::solve()
 
 void tetra_solver::pretty_print()
 {
-    std::cout << "Grid: " << this->grid_size << "*" << this->grid_size << std::endl;
+    if (nice)
+        std::cout << "Grid: " << this->grid_size << "*" << this->grid_size << std::endl;
     for (unsigned int i = 0; i < this->grid_size; i++)
         for (int k = 0; k < 3; k++)
         {
